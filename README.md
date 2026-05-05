@@ -1,3 +1,5 @@
+<img width="1080" height="324" alt="Banners" src="https://github.com/user-attachments/assets/dd9f74fe-a5ee-4d59-8451-4df8e65192df" />
+
 # CommonGround
 
 **Find places everyone can reach.**
