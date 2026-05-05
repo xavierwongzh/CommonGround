@@ -1,4 +1,4 @@
-<img width="1080" height="324" alt="Banners" src="https://github.com/user-attachments/assets/dd9f74fe-a5ee-4d59-8451-4df8e65192df" />
+<img width="1080" height="324" alt="Banners(1)" src="https://github.com/user-attachments/assets/dbfc6d84-08d8-43d6-9aea-43649fff2565" />
 
 # CommonGround
 
