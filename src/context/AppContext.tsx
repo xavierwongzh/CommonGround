@@ -1,4 +1,5 @@
 'use client';
+/// <reference types="@types/google.maps" />
 
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import {
@@ -50,6 +51,7 @@ const initialState: AppState = {
   globalTravelMode: 'public_transport',
   useGlobalMode: true,
   isDarkMode: false,
+  isSearchingPlaces: false,
 };
 
 function recomputeOverlaps(
@@ -354,6 +356,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const mySearchId = ++searchIdRef.current;
     const isStale = () => searchIdRef.current !== mySearchId;
 
+    setState((prev) => ({ ...prev, isSearchingPlaces: true, places: [] }));
+
     const s = stateRef.current;
     const visibleIsochrones = s.isochrones.filter((iso) => {
       const loc = s.locations.find((l) => l.id === iso.locationId);
@@ -362,6 +366,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     if (visibleIsochrones.length === 0) {
       showToast('Generate isochrones first to search for places.', 'info');
+      setState((prev) => ({ ...prev, isSearchingPlaces: false }));
       return;
     }
 
@@ -377,6 +382,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       const overlap = s.overlapResults[0];
       if (!overlap?.polygon) {
         showToast('No overlap area found. Make sure both locations have isochrones.', 'info');
+        setState((prev) => ({ ...prev, isSearchingPlaces: false }));
         return;
       }
       try {
@@ -465,7 +471,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         return score(b) - score(a);
       });
 
-      setState((prev) => ({ ...prev, places: scored }));
+      setState((prev) => ({ ...prev, places: scored, isSearchingPlaces: false }));
       if (scored.length === 0) {
         showToast('No places found inside the reachable area.', 'info');
       } else {
@@ -485,6 +491,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         status !== google.maps.places.PlacesServiceStatus.ZERO_RESULTS
       ) {
         showToast('Places search failed. Check your Google Places API key.', 'error');
+        setState((prev) => ({ ...prev, isSearchingPlaces: false }));
         onDone?.();
         return;
       }

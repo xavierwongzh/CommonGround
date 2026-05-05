@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, X } from 'lucide-react';
+import { Loader2, Search, X } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { PLACE_CATEGORIES } from '@/lib/placesCategories';
 import { PlaceResultsList } from './PlaceResultsList';
@@ -11,6 +11,7 @@ export function PlaceDiscoveryPanel() {
   const { state, searchPlaces, clearPlaces, setSelectedCategory } = useApp();
   const dark = state.isDarkMode;
   const hasIsochrones = state.isochrones.length > 0;
+  const isSearching = state.isSearchingPlaces;
   const [keyword, setKeyword] = useState('');
 
   const handleSearch = () => {
@@ -87,18 +88,20 @@ export function PlaceDiscoveryPanel() {
       <div className="flex gap-2">
         <button
           onClick={handleSearch}
-          disabled={!hasIsochrones}
+          disabled={!hasIsochrones || isSearching}
           className={cn(
             'flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-semibold transition-all',
-            hasIsochrones
+            hasIsochrones && !isSearching
               ? 'bg-blue-600 hover:bg-blue-700 text-white'
               : dark
               ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
               : 'bg-gray-100 text-gray-400 cursor-not-allowed'
           )}
         >
-          <Search size={12} />
-          {keyword ? 'Search' : 'Search in Reachable Area'}
+          {isSearching
+            ? <><Loader2 size={12} className="animate-spin" /> Searching…</>
+            : <><Search size={12} />{keyword ? 'Search' : 'Search in Reachable Area'}</>
+          }
         </button>
 
         {state.places.length > 0 && (

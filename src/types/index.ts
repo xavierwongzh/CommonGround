@@ -64,6 +64,7 @@ export interface AppState {
   globalTravelMode: TravelMode;
   useGlobalMode: boolean;
   isDarkMode: boolean;
+  isSearchingPlaces: boolean;
 }
 
 export type PlaceCategory =
