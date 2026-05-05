@@ -42,7 +42,3 @@ NEXT_PUBLIC_TRAVELTIME_API_KEY=
 ```
 
 Without keys the app runs in demo mode with mock isochrones.
-
-## Deployment
-
-Deploy instantly on [Vercel](https://vercel.com). Add the three environment variables in your project settings.
